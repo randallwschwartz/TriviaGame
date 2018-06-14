@@ -4,7 +4,7 @@ $(document).ready(function() {
 
   //setup variables with trivia questions and answers
   var questionsArray = [
-    "In what year did the team move from Municipal Stadium to Kauffman (née Royals) Stadium?",
+    "In what year did the team move from Municipal Stadium to Kauffman Stadium?",
     "Which team did the Royals beat to win their first American League pennant in 1980?",
     "What was Royals Hall of Famer George Brett’s final batting average in 1980?",
     "Who was the winning pitcher in Game 7 of the 1985 World Series?",
@@ -27,18 +27,15 @@ $(document).ready(function() {
   console.log(answersArray);
   console.log(correctAnswer);
 
-  //create set timeout methods
-  setTimeout(fiveSeconds, 1000 * 5);
-  setTimeout(tenSeconds, 1000 * 10);
 
   initiateGame();
-
+  senseClick();
   
   function initiateGame() {
 
     $("#triviaDisplay").empty();
 
-    // var startButton = $("<button id='start'>" + "Start" + "</button>");
+    // create a start button element
     var startButton = $("<button>");
     startButton.addClass("start");
     startButton.text("Start");    
@@ -48,105 +45,50 @@ $(document).ready(function() {
 
   }
 
+  var rightAnsTotal = 0;
+  var wrongAnsTotal = 0;
+  var unansweredTotal = 0;
 
-  function fiveSeconds() {
-
-    // in the element with an id of time-left add an h2 saying About 10 Seconds Left!
-    // console log 10 seconds left
-    $("#time-left").append("<h2>About 10 Seconds Left!</h2>");
-    console.log("10 seconds left");
-  }
-  
-  function tenSeconds() {
-  
-    // in the element with an id of time-left add an h2 saying About 5 Seconds Left!
-    // console log 5 seconds left
-    $("#time-left").append("<h2>About 5 Seconds Left!</h2>");
-    console.log("5 seconds left");
-  }
-
-  // // add a for loop to loop through the trivia answers
-  // for (i = 0; i < questionsArray.length; i++) {
-
-  // };
+  var interval2;
+  var ans = "";
 
   //start with the first question
   var questionNumber = 0;
+  
+  // On Click of Start button, call function to print a new question 
+  //along with the four possible answers that are clickable
+  //
+  function senseClick() {
+    $(".start").on("click", function() {
+      newQuestion(questionNumber);
 
-  //on a click of start button, call function to print a new question along with the four possible answers that are clickable
-  $(".start").on("click", function() {
-    newQuestion(questionNumber);
-  });
-
-  // Adding click event listener to all elements with a class of "qAnswer", run the checkAnswer function
-  $(document).on("click", ".qAnswer", checkAnswer(questionNumber));
-
-
-
-
-  // ----------------
-
-  function checkAnswer(i) {
-    //on a click of an html answer, do these steps to determine if answer is correct
-    var correctAns = false;
-    // grab the data from the answer clicked and assign to variable "ans"
-    var ans = $(this).attr("data-answer");
-    // pick the answer from the array associated with the question number
-    var rightAnswer = correctAnswer[i];
-
-    if (ans = rightAnswer) {
-      correctAns = true;
-    }
-
-    //empty the trivia element
-    $("#triviaDisplay2").empty();
-
-    //grab the trivia element
-    var triviaAnswer = $("#triviaDisplay2");
-
-    // Creates an element to hold the image
-    // var image = $("<img>").attr("src", imgURL);
-
-    if (correctAns) {
-      //build the triviaAnswer element by adding the answer and image 
-      triviaAnswer.append("You are right!  The correct answer is: " + rightAnswer + "<hr><hr>");
-      // triviaAnswer.append(image);
-
-    } else {
-      triviaAnswer.append("You are wrong!  The correct answer is: " + rightAnswer + "<hr><hr>");
-
-    }
-
-    //then call function to print a new question along with the four possible answers that are clickable
-    if (questionNumber<4) {
-      //go to the next question
-      questionNumber++;
-
-      //hold for 5 seconds, then call newQuestion
-      setInterval(newQuestion(questionNumber), 1000 * 5);
-    } else {
-      //if at the end of questions, start over
-      questionNumber = 0;
-
-      //hold for 5 seconds, then call newQuestion
-      setInterval(newQuestion(questionNumber), 1000 * 5);
-    }
+      // Adding click event listener to all elements with a class of "qAnswer"
+      // run the checkAnswer function
+      $(document).on("click", ".qAnswer", function(event) {
+        // grab the data from the answer clicked and assign to variable "ans"
+        ans = $(this).attr("data-answer");
+        console.log(ans);
+        checkAnswer(questionNumber);
+      });
+    });
   }
 
 
-
-  // -------------
-
+  //run this function each time we want to present a new trivia question to be answered
+  //
   function newQuestion(i) {
-    //run this function each time we want to present a new trivia question to be answered
+
+    clearInterval(interval2);
 
     //empty the divs first
     $("#triviaDisplay").empty();
     $("#triviaDisplay2").empty();
 
-    //start the timer and call an out of time function if exceed 30 seconds
-    setInterval(outOfTime, 1000 * 30);
+    //***maybe remove this****start the timer and call an out of time function if exceed 30 seconds
+    // setInterval(outOfTime, 1000 * 30);
 
+    //  Execute the runTimer function.
+    runTimer();
 
     //grab the trivia element
     var triviaQuestion = $("#triviaDisplay2");
@@ -173,15 +115,75 @@ $(document).ready(function() {
       // appends the div to the triviaQuestion div
       triviaQuestion.append(answer);
 
+      console.log(possibleAnswers[j]);
+
     };
 
     //append the triviaQuestion element to the html
     $("#triviaDisplay2").append(triviaQuestion);
+
     console.log(triviaQuestion);
   }
 
-  function outOfTime() {
+
+  // ----------------
+  //on a click of an html answer, do these steps to determine if answer is correct
+  function checkAnswer(i) {
+    // first, stop the timer
+    stop();
+
+    // grab the answer from the array associated with the question number
     var rightAnswer = correctAnswer[i];
+    console.log(rightAnswer);
+
+    // empty the trivia element
+    $("#triviaDisplay2").empty();
+
+    // grab the trivia element
+    var triviaAnswer = $("#triviaDisplay2");
+
+    // provide a message depending if the answer does or does not match the correct answer
+    if (ans === rightAnswer) {
+      //increment rightAnsTotal
+      rightAnsTotal++;
+
+      //build the triviaAnswer element by adding the answer and image 
+      triviaAnswer.append("You are right!  The correct answer is: " + rightAnswer + "<hr><hr>");
+      // triviaAnswer.append(image);
+
+    } else {
+      //increment wrongAnsTotal
+      wrongAnsTotal++;
+
+      //build the triviaAnswer element by adding the answer and image 
+      triviaAnswer.append("You are wrong!  The correct answer is: " + rightAnswer + "<hr><hr>");
+      // triviaAnswer.append(image);
+    }
+
+    clearInterval(interval2);
+
+    //then call newQuestion to print the next question along with the four clickable answers
+    //if at the end of the list of questions, go back to the first question
+    if (questionNumber<4) {
+      //go to the next question
+      questionNumber++;
+
+      // hold for 5 seconds, then call newQuestion
+      interval2 = setInterval(function(){newQuestion(questionNumber)}, 1000 * 2);
+
+    } else {
+      //if at the end of questions, hold for 5 seconds, then log the results
+      interval2 = setInterval(logResults, 1000 * 2);
+    }
+  }
+  // -------------
+
+
+  function outOfTime(i) {
+    var rightAnswer = correctAnswer[i];
+
+    // increment unansweredTotal
+    unansweredTotal++;
 
     //empty the trivia element
     $("#triviaDisplay2").empty();
@@ -192,36 +194,101 @@ $(document).ready(function() {
     triviaAnswer.append("Sorry, you ran out of time.  The correct answer is: " + rightAnswer + "<hr><hr>");
       // triviaAnswer.append(image);
 
+    clearInterval(interval2);
 
-    //then call function to print a new question along with the four possible answers that are clickable
+    //then call newQuestion to print the next question along with the four clickable answers
+    //if at the end of the list of questions, go back to the first question
     if (questionNumber<4) {
       //go to the next question
       questionNumber++;
 
-      //hold for 5 seconds, then call newQuestion
-      setInterval(newQuestion(questionNumber), 1000 * 5);
-    } else {
-      //if at the end of questions, start over
-      questionNumber = 0;
+      // hold for 5 seconds, then call newQuestion
+      interval2 = setInterval(function(){newQuestion(questionNumber)}, 1000 * 2);
 
-      //hold for 5 seconds, then call newQuestion
-      setInterval(newQuestion(questionNumber), 1000 * 5);
+    } else {
+      //if at the end of questions, hold for 5 seconds, then log the results
+      interval2 = setInterval(logResults, 1000 * 2);
+
     }
 
   }
 
-  // $("#triviaDisplay2").on("click", function() {
-  //   //on a click of start button, call function to print a new question along with the four possible answers that are clickable
+  // function that logs results and asks if you want to play again
+  function logResults(){
 
-  //   // add a for loop to loop through the trivia questions
-  //   for (i = 0; i < questionsArray.length; i++) {
+    //empty the trivia element
+    $("#triviaDisplay").empty();
+    $("#triviaDisplay2").empty();
 
-  //     // call the newQuestion function
-  //     newQuestion(i);
+    //grab the trivia element
+    var triviaQuestion = $("#triviaDisplay2");
 
-  //   };
+    //build the triviaQuestion element by adding the results 
+    triviaQuestion.append("Correct Answers: " + rightAnsTotal + "<hr>");
+    triviaQuestion.append("Incorrect Answers: " + wrongAnsTotal + "<hr>");
+    triviaQuestion.append("Unanswered: " + unansweredTotal + "<hr>");
 
-  // });
+    //create another button to restart
+    var startButtonTwo = $("<button>");
+    startButtonTwo.addClass("startTwo");
+    startButtonTwo.text("Start");    
 
+    //append the button to the trivia html
+    triviaQuestion.append("Do you want to play again? " + startButtonTwo);
+
+    $(".startTwo").on("click", function() {
+      initiateGame();
+      senseClick();
+    });
+  
+  }
+
+
+  //  Variable that will hold our interval ID when we execute
+  //  the "run" function
+  var intervalId;
+  var number;
+
+  //  The runTimer function sets an interval
+  //  that runs the decrement function once a second.
+  //  *****BUG FIX******** 
+  //  Clearing the intervalId prior to setting our new intervalId will not allow multiple instances.
+  function runTimer() {
+    number = 15;
+    clearInterval(intervalId);
+    intervalId = setInterval(decrement, 1000);
+  }
+
+  //  The decrement function.
+  function decrement() {
+
+    //  Decrease number by one.
+    number--;
+
+    //  Show the number in the #triviaDisplay tag.
+    $("#triviaDisplay").html("<h2>" + number + "</h2>");
+
+
+    //  Once number hits zero...
+    if (number === 0) {
+
+      //  ...run the stop function.
+      stop();
+
+      outOfTime(questionNumber);      
+
+      //  Alert the user that time is up.
+      alert("Time is up!");
+    }
+  }
+
+  //  The stop function
+  function stop() {
+
+    //  Clears our intervalId
+    //  We just pass the name of the interval
+    //  to the clearInterval function.
+    clearInterval(intervalId);
+  }
 
 });
