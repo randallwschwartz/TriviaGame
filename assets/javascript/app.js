@@ -22,11 +22,11 @@ $(document).ready(function() {
   var correctAnswer = ["1973", "New York Yankees", ".390", "Bret Saberhagen", "Paul Splittorff"];
   
   var imagesArray = [
-    "kauffman.jpg",
-    "../images/yankees.png",
-    "../images/brett.jpeg",
-    "../images/saberhagen.jpeg",
-    "../images/splittorff.jpeg"
+    "assets/images/kauffman.jpg",
+    "assets/images/yankees.png",
+    "assets/images/brett.jpeg",
+    "assets/images/saberhagen.jpeg",
+    "assets/images/splittorff.jpeg"
   ];
 
   console.log(questionsArray);
@@ -90,9 +90,6 @@ $(document).ready(function() {
     $("#triviaDisplay").empty();
     $("#triviaDisplay2").empty();
 
-    //***maybe remove this****start the timer and call an out of time function if exceed 30 seconds
-    // setInterval(outOfTime, 1000 * 30);
-
     //  Execute the runTimer function.
     runTimer();
 
@@ -100,14 +97,13 @@ $(document).ready(function() {
     var triviaQuestion = $("#triviaDisplay2");
 
     //build the triviaQuestion element by adding question 
-    triviaQuestion.append("Question: " + questionsArray[i] + "<hr><hr>");
+    triviaQuestion.append("Question: " + questionsArray[i] + "<hr>");
 
     var possibleAnswers = [];
     possibleAnswers = answersArray[i];
 
     //continue building the triviaQuestion element by adding the four possible answers 
     for (j=0; j<possibleAnswers.length; j++) {
-      // triviaQuestion.append(possibleAnswers[j] + "<hr>");
 
       //dynamically generate clickable html for each answer in the array
       var answer = $("<div>");
@@ -148,14 +144,16 @@ $(document).ready(function() {
     // grab the trivia element
     var triviaAnswer = $("#triviaDisplay2");
 
+    var image = $("<img>");
+    image.attr("src", imagesArray[i]);
+
     // provide a message depending if the answer does or does not match the correct answer
     if (ans === rightAnswer) {
       //increment rightAnsTotal
       rightAnsTotal++;
 
       //build the triviaAnswer element by adding the answer and image 
-      triviaAnswer.append("You are right!  The correct answer is: " + rightAnswer + "<hr><hr>");
-      var image = $("<img>").attr("src", imagesArray[i]);
+      triviaAnswer.append("You are right!  The correct answer is: " + rightAnswer + "<hr>");
       triviaAnswer.append(image);
   
     } else {
@@ -163,8 +161,7 @@ $(document).ready(function() {
       wrongAnsTotal++;
 
       //build the triviaAnswer element by adding the answer and image 
-      triviaAnswer.append("You are wrong!  The correct answer is: " + rightAnswer + "<hr><hr>");
-      var image = $("<img>").attr("src", imagesArray[i]);
+      triviaAnswer.append("You are wrong!  The correct answer is: " + rightAnswer + "<hr>");
       triviaAnswer.append(image);
     }
 
@@ -199,8 +196,10 @@ $(document).ready(function() {
     //grab the trivia element
     var triviaAnswer = $("#triviaDisplay2");
 
-    triviaAnswer.append("Sorry, you ran out of time.  The correct answer is: " + rightAnswer + "<hr><hr>");
-    var image = $("<img>").attr("src", imagesArray[i]);
+    triviaAnswer.append("Sorry, you ran out of time.  The correct answer is: " + rightAnswer + "<hr>");
+
+    var image = $("<img>");
+    image.attr("src", imagesArray[i]);
     triviaAnswer.append(image);
 
     clearInterval(interval2);
