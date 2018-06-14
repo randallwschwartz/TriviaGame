@@ -20,8 +20,14 @@ $(document).ready(function() {
   ];
 
   var correctAnswer = ["1973", "New York Yankees", ".390", "Bret Saberhagen", "Paul Splittorff"];
-  // var correctAnswer = [answersArray[0,2], answersArray[1,2], answersArray[2,3], answersArray[3,1], answersArray[4,2]];
-
+  
+  var imagesArray = [
+    "kauffman.jpg",
+    "../images/yankees.png",
+    "../images/brett.jpeg",
+    "../images/saberhagen.jpeg",
+    "../images/splittorff.jpeg"
+  ];
 
   console.log(questionsArray);
   console.log(answersArray);
@@ -149,15 +155,17 @@ $(document).ready(function() {
 
       //build the triviaAnswer element by adding the answer and image 
       triviaAnswer.append("You are right!  The correct answer is: " + rightAnswer + "<hr><hr>");
-      // triviaAnswer.append(image);
-
+      var image = $("<img>").attr("src", imagesArray[i]);
+      triviaAnswer.append(image);
+  
     } else {
       //increment wrongAnsTotal
       wrongAnsTotal++;
 
       //build the triviaAnswer element by adding the answer and image 
       triviaAnswer.append("You are wrong!  The correct answer is: " + rightAnswer + "<hr><hr>");
-      // triviaAnswer.append(image);
+      var image = $("<img>").attr("src", imagesArray[i]);
+      triviaAnswer.append(image);
     }
 
     clearInterval(interval2);
@@ -192,7 +200,8 @@ $(document).ready(function() {
     var triviaAnswer = $("#triviaDisplay2");
 
     triviaAnswer.append("Sorry, you ran out of time.  The correct answer is: " + rightAnswer + "<hr><hr>");
-      // triviaAnswer.append(image);
+    var image = $("<img>").attr("src", imagesArray[i]);
+    triviaAnswer.append(image);
 
     clearInterval(interval2);
 
