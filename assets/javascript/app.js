@@ -246,26 +246,31 @@ $(document).ready(function() {
     triviaQuestion.append("Incorrect Answers: " + wrongAnsTotal + "<hr>");
     triviaQuestion.append("Unanswered: " + unansweredTotal + "<hr>");
 
+    // clearInterval(intervalTwo);
+
+    // intervalTwo = setInterval(initiateGame, 1000 * 2);
+
     //create another button to restart
     // var startAgain = $("<button>");
     // startAgain.addClass("start");
     // startAgain.text("Start");    
 
     //append the button to the trivia html
-    // triviaQuestion.append("Do you want to play again? " + startAgain);
-    triviaQuestion.append("Click here to play again.");
+    // triviaQuestion.append("Click here to play again.");
 
-    startAnotherGame();
-  }
-
-  // listen for a click; on click, initiate another game
-  function startAnotherGame() {
-    $(document).on("click", "#triviaDisplayTwo", function(event) {
-      triviaQuestion.empty();
-    });
-    initiateGame();
+    // listen for a click; on click, initiate another game
+    // $(document).on("click", "#triviaDisplayTwo", function(event) {
+    //   startAnotherGame();
+    // });
 
   }
+
+  // function startAnotherGame() {
+  //   triviaQuestion.empty();
+  //   $(document).on("click", "#triviaDisplayTwo", function(event) {
+  //     initiateGame();
+  //   });
+  // }
 
 
   //  Variable that will hold our interval ID when we execute
