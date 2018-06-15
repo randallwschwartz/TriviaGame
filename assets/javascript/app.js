@@ -43,7 +43,7 @@ $(document).ready(function() {
   console.log(correctAnswer);
 
 
-  initiateGame();
+  // initiateGame();
   
   function initiateGame() {
 
@@ -319,5 +319,10 @@ $(document).ready(function() {
     //  to the clearInterval function.
     clearInterval(intervalId);
   }
+
+
+  initiateGame();
+
+  
 
 });
