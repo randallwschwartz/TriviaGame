@@ -35,6 +35,8 @@ $(document).ready(function() {
   var intervalTwo;
   var ans;
   var questionNumber;
+  var triviaQuestion;
+
 
   console.log(questionsArray);
   console.log(answersArray);
@@ -65,14 +67,8 @@ $(document).ready(function() {
     $("#triviaDisplay").append(startButton);
 
     senseClick();
-
   }
 
-  // create another start button element
-  // var startAgain = $("<button>");
-  // startAgain.addClass("start");
-  // startAgain.text("Start");    
-  
   
   // On Click of Start button, call function to print a new question 
   //along with the four possible answers that are clickable
@@ -107,7 +103,7 @@ $(document).ready(function() {
     runTimer();
 
     //grab the trivia element
-    var triviaQuestion = $("#triviaDisplayTwo");
+    triviaQuestion = $("#triviaDisplayTwo");
 
     //build the triviaQuestion element by adding question 
     triviaQuestion.append("Question: " + questionsArray[i] + "<hr>");
@@ -243,7 +239,7 @@ $(document).ready(function() {
     $("#triviaDisplayTwo").empty();
 
     //grab the trivia element
-    var triviaQuestion = $("#triviaDisplayTwo");
+    triviaQuestion = $("#triviaDisplayTwo");
 
     //build the triviaQuestion element by adding the results 
     triviaQuestion.append("Correct Answers: " + rightAnsTotal + "<hr>");
@@ -259,14 +255,16 @@ $(document).ready(function() {
     // triviaQuestion.append("Do you want to play again? " + startAgain);
     triviaQuestion.append("Click here to play again.");
 
-    //then listen for a button click
+    startAnotherGame();
+  }
+
+  // listen for a click; on click, initiate another game
+  function startAnotherGame() {
     $(document).on("click", "#triviaDisplayTwo", function(event) {
-    // $("#triviaDisplayTwo").on("click", function() {
       triviaQuestion.empty();
-      initiateGame();
-  
     });
-  
+    initiateGame();
+
   }
 
 

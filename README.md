@@ -1,1 +1,3 @@
 # TriviaGame
+
+What the project does: This trivia game provides the user with a series of timed trivia questions.  The purpose of the game is to correctly answer as many questions as possible.  For each question, the user is presented with four possible answers, and the user is asked to select the right answer.  The user is given a set time to answer each question.  When a selection is made, the game tells the user if the correct answer was selected.  If the user does not make a timely selection, the game tells the user that time has expired and automatically tells the user the correct answer.  After proceeding through all questions, the game lists how many questions were answered correctly or incorrectly, and also lists the number of unanswered questions.
